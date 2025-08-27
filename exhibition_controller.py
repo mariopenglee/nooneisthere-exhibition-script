@@ -455,20 +455,34 @@ illum 1
         print("\n→ Starting 3D viewer server...")
         viewer_dir = self.config['viewer_dir']
         
-        # Start HTTP server in viewer directory
-        cmd = [sys.executable, "-m", "http.server", "8000"]
-        
+        # Use system Python for HTTP server to avoid environment conflicts
+        # This ensures the server runs with the same behavior as manual 'python -m http.server'
         if self.system == "Windows":
+            python_cmd = "python"
+            cmd = [python_cmd, "-m", "http.server", "8000"]
+            
             # Windows: Hide console window for server
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            process = subprocess.Popen(cmd, cwd=viewer_dir, startupinfo=startupinfo)
+            try:
+                # These attributes are only available on Windows
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                process = subprocess.Popen(cmd, cwd=viewer_dir, startupinfo=startupinfo)
+            except AttributeError:
+                # Fallback if Windows-specific attributes not available
+                process = subprocess.Popen(cmd, cwd=viewer_dir)
         else:
-            # macOS/Linux
-            process = subprocess.Popen(cmd, cwd=viewer_dir)
+            # macOS/Linux: try python3 first, fallback to python if needed
+            try:
+                cmd = ["python3", "-m", "http.server", "8000"]
+                process = subprocess.Popen(cmd, cwd=viewer_dir)
+            except FileNotFoundError:
+                # Fallback to 'python' if 'python3' not found
+                cmd = ["python", "-m", "http.server", "8000"]
+                process = subprocess.Popen(cmd, cwd=viewer_dir)
         
         self.processes.append(process)
         print("✓ Viewer server started on http://localhost:8000")
+        print(f"  (Using system Python instead of environment Python for better compatibility)")
         return process
     
     def open_browser(self):
