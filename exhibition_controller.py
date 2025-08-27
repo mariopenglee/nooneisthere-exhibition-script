@@ -20,6 +20,7 @@ class ExhibitionController:
         self.threads = []
         self.running = True
         self.system = platform.system()  # 'Windows', 'Darwin' (macOS), 'Linux'
+        self.current_model_number = 1  # Track which model to generate next (1, 2, 3)
 
         print(f"Detected OS: {self.system}")
 
@@ -357,19 +358,26 @@ class ExhibitionController:
         if not obj_path:
             return False
         
-        # Step 4: Copy to viewer directory
-        target_path = Path(self.config['viewer_models_dir']) / "model1.obj"
+        # Step 4: Copy to viewer directory with subdirectory structure
+        model_name = f"model{self.current_model_number}"
+        model_dir = Path(self.config['viewer_models_dir']) / model_name
+        model_dir.mkdir(exist_ok=True)
+        
+        target_path = model_dir / f"{model_name}.obj"
         shutil.copy2(obj_path, target_path)
         
         # Create simple MTL file
-        self.create_mtl(target_path.with_suffix('.mtl'))
+        self.create_mtl(model_dir / f"{model_name}.mtl")
         
         # Save prompt for reference
-        prompt_file = Path(self.config['viewer_models_dir']) / "last_prompt.txt"
+        prompt_file = model_dir / "last_prompt.txt"
         with open(prompt_file, 'w') as f:
             f.write(f"{datetime.now().isoformat()}\n{prompt}")
         
         print(f"✓ Object saved to viewer: {target_path}")
+        
+        # Increment model number for next generation (cycle 1->2->3->1)
+        self.current_model_number = (self.current_model_number % 3) + 1
         
         # Cleanup temp files
         self.cleanup_temp()
