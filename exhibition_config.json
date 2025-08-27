@@ -1,0 +1,24 @@
+{
+    "pointe_dir": "auto",
+    "pointe_env": "auto",
+    "viewer_dir": "auto",
+    "temp_dir": "auto",
+    "generation_interval": 30,
+    "use_gpu": true,
+    "browser": "chrome",
+    "close_browser_on_exit": false,
+    "prompts": {
+        "descriptions": [
+            "broken", "old", "worn", "vintage", "modern",
+            "rusty", "shiny", "rough", "smooth", "weathered"
+        ],
+        "materials": [
+            "leather", "wood", "metal", "plastic", "fabric",
+            "glass", "stone", "marble", "concrete", "velvet"
+        ],
+        "objects": [
+            "couch", "chair", "table", "lamp", "desk",
+            "bench", "stool", "cabinet", "shelf", "dresser"
+        ]
+    }
+}

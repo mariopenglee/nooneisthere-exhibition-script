@@ -1,0 +1,50 @@
+{
+    "pointe_dir": "/Users/mariopenglee/Documents/GitHub/nooneisthere",
+    "pointe_env": "/Users/mariopenglee/Documents/GitHub/nooneisthere/env",
+    "viewer_dir": "/Users/mariopenglee/Documents/GitHub/local3dviewer",
+    "temp_dir": "/tmp/exhibition",
+    "generation_interval": 30,
+    "use_gpu": true,
+    "browser": "chrome",
+    "close_browser_on_exit": false,
+    "prompts": {
+        "descriptions": [
+            "broken",
+            "old",
+            "worn",
+            "vintage",
+            "modern",
+            "rusty",
+            "shiny",
+            "rough",
+            "smooth",
+            "weathered"
+        ],
+        "materials": [
+            "leather",
+            "wood",
+            "metal",
+            "plastic",
+            "fabric",
+            "glass",
+            "stone",
+            "marble",
+            "concrete",
+            "velvet"
+        ],
+        "objects": [
+            "couch",
+            "chair",
+            "table",
+            "lamp",
+            "desk",
+            "bench",
+            "stool",
+            "cabinet",
+            "shelf",
+            "dresser"
+        ]
+    },
+    "viewer_models_dir": "/Users/mariopenglee/Documents/GitHub/local3dviewer/models",
+    "env_type": "venv"
+}
